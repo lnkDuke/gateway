@@ -33,19 +33,27 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
+            <exclusions>
+                <!-- 排除 Intel 版本的 macOS DNS 解析器，使用下方 ARM64 版本 -->
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-resolver-dns-native-macos</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Apple Silicon (M1/M2/M3) Mac 需要的 DNS 解析器 -->
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-resolver-dns-native-macos</artifactId>
-            <classifier>osx-aarch_64</classifier>  <!-- 如果你用的是 M1/M2/M3 Mac -->
-            <!-- 如果你用的是 Intel Mac，改为 classifier: osx-x86_64 -->
+            <classifier>osx-aarch_64</classifier>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
         </dependency>
 
         <dependency>

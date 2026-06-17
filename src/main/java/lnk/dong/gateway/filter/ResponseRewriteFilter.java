@@ -23,6 +23,8 @@ public class ResponseRewriteFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        System.out.println("======= ResponseRewriteFilter - PRE (order=-3) =======");
+
         ServerHttpResponse originalResponse = exchange.getResponse();
         DataBufferFactory bufferFactory = originalResponse.bufferFactory();
 
@@ -85,6 +87,6 @@ public class ResponseRewriteFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -2;  // 保证在响应返回时，最先拦截到原始响应体
+        return -3;  // 比 NettyWriteResponseFilter(-1) 更早执行，保证响应装饰器先生效
     }
 }
