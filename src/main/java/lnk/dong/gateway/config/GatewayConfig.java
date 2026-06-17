@@ -18,6 +18,8 @@ public class GatewayConfig {
                 .route("test_route", r -> r
                         .path("/test/**")
                         .filters(f -> f
+                                // 0. 路径重写：去掉 /test 前缀再转发（否则 httpbin.org 返回 404）
+                                .rewritePath("/test/(?<segment>.*)", "/${segment}")
                                 // 1. 内置过滤器：添加请求头
                                 .addRequestHeader("X-From-Gateway", "Hello")
                                 // 2. 内置过滤器：添加响应头
