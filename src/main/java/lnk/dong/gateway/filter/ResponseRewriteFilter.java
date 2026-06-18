@@ -34,6 +34,7 @@ public class ResponseRewriteFilter implements GlobalFilter, Ordered {
             public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
                 // 只处理 JSON 类型的响应
                 MediaType contentType = originalResponse.getHeaders().getContentType();
+                System.out.println("【调试】Content-Type: " + contentType);
                 if (contentType == null || !contentType.includes(MediaType.APPLICATION_JSON)) {
                     return super.writeWith(body);
                 }
@@ -59,7 +60,8 @@ public class ResponseRewriteFilter implements GlobalFilter, Ordered {
 
                     // ===== 在这里进行响应体改造 =====
                     // 示例：将 JSON 中的 "phone": "13800138000" 替换为 "phone": "****"
-                    String modifiedBody = originalBody.replaceAll("\"phone\":\"(\\d{11})\"", "\"phone\":\"****\"");
+                    // 使用 \\s* 兼容 JSON 格式化时的空格（如 "phone": "13800138000" 或 "phone":"13800138000"）
+                    String modifiedBody = originalBody.replaceAll("\"phone\"\\s*:\\s*\"(\\d{11})\"", "\"phone\": \"****\"");
 
                     // 示例：统一包装响应（如果原始不是标准格式）
                     // String wrappedBody = "{\"code\":0,\"data\":" + originalBody + "}";

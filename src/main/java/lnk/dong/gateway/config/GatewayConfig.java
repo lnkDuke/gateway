@@ -46,8 +46,8 @@ public class GatewayConfig {
                                     return result;
                                 })
                         )
-                        // 目标URI：使用公网测试API（返回请求的详细信息）
-                        .uri("http://httpbin.org:80")
+                        // 目标URI：使用公网测试API（返回请求的详细信息）--- 回声服务器
+                        .uri("http://httpbin.org")
                 )
                 .build();
     }
